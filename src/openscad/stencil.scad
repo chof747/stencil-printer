@@ -1,14 +1,10 @@
-/*
-difference() {
-	cube([45,55,.3]);
- 	}
-}
-*/
-
 stencil_height = 0.6;
-dxf_file = "wlan-thermo-front-panel-F_Paste.dxf";
+front_paste = "";
+tolerance=0.1;
+
+$fn=30;
 
 minkowski() {
-  
-  linear_extrude(stencil_height) import(dxf_file);
-}
+  linear_extrude(stencil_height) import(front_paste);
+  //cube(tolerance);
+};
