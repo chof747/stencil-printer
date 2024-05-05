@@ -7,7 +7,13 @@ This is a project to create stencils to apply solderpaste to SMD soldering parts
 The concept is based on the following workflow:
 
 1. Design the board in KiCad
+   - Place the drill origin on the coordinate system on the right place
 2. Based on the completed board design plot the *Front Paste* and the *Edge Cut* (or a custom layer containing the outer board line) in DXF format
+   - Use mm 
+   - Use drill/place file origin 
+   - Untick Plot graphic items using their conturs
+   - For the first
+
 3. Execute the `create_stencil.py` script pointing to the generated dfx files and providing critical parameters like board dimensions, stencil height and tolerance
 4. Print the two created STL files (`stencil.stl` and `frame.stl`) with a 3D Filament printer using the special settings described below
 

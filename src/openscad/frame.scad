@@ -1,6 +1,8 @@
 scaling=1;
-board_length = 44*scaling;
-board_width = 37*scaling;
+board_y = 10;
+board_x = 12;
+board_length = board_y*scaling;
+board_width = board_x*scaling;
 rim = 5;
 stencil_height = 0.3;
 bottom_height  = 1.5;
@@ -58,5 +60,13 @@ translate([0,0,bottom_distance])
       translate([0,0, -1 * bottom_distance])
         cube([board_width+rim*2, board_length+rim*2, bottom_height]);
   };
-    
+  
+  /*
+  
+  minkowski() {
+          scale([scaling,scaling,1])
+          linear_extrude(stencil_height + board_height + tolerance + 0.1) import(board_outline);
+          cube(tolerance);
+          };
+          */
 };

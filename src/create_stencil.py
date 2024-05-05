@@ -3,6 +3,7 @@ import os
 import getopt
 import sys
 import subprocess
+import ezdxf
 from typing import List, Tuple
 from dotenv import load_dotenv
 
@@ -75,6 +76,15 @@ def print_usage():
     print("      --tolerance        Tolerance (default 0.1)")
 
 
+def get_max_dimensions(dxf_file):
+    doc = ezdxf.readfile(dxf_file)
+    msp = doc.modelspace()
+
+    max_x = max(entity.dxf.end[0] for entity in msp if entity.dxftype() == 'LINE')
+    max_y = max(entity.dxf.end[1] for entity in msp if entity.dxftype() == 'LINE')
+
+    return max_x, max_y
+
 def runOpenScad(arguments: List[str]) -> Tuple[bool,str,str]:
     """ Combine the application path and parameters into a single command """
 
@@ -130,13 +140,21 @@ def main(argv):
         f'''{os.path.join(params['output_filepath'],'frame.stl')}'''
     ]
 
+    x,y = get_max_dimensions(params['board_outline'])
+    print(f"max_x = {x}, max_y = {y}")
+
+    board_outline_args = [
+        f"-D board_x={x}",
+        f"-D board_y={y}"
+    ]
+
     #stencil run    
-    print("creting stencil ...", end=None)
+    print("creating stencil ...", end=None)
     runOpenScad(standard_args + geometry_args + stencil_args)
     print(" done")
     #frame run
-    print("creting frame ...", end=None)
-    runOpenScad(standard_args + geometry_args + frame_args)
+    print("creating frame ...", end=None)
+    runOpenScad(standard_args + geometry_args + frame_args + board_outline_args)
     print(" done")
         
 
